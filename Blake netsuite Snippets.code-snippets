@@ -1,0 +1,701 @@
+{
+    // Place your global snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
+    // description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope
+    // is left empty or omitted, the snippet gets applied to all languages. The prefix is what is
+    // used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+    // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
+    // Placeholders with the same ids are connected.
+    // Example:
+    // "Print to console": {
+    // 	"scope": "javascript,typescript",
+    // 	"prefix": "log",
+    // 	"body": [
+    // 		"console.log('$1');",
+    // 		"$2"
+    // 	],
+    // 	"description": "Log output to console"
+    // }
+    "For Loop": {
+        "scope": "javascript,typescript",
+        "prefix": "for",
+        "body": ["for (let ${index} = 0; ${index} < ${array}; ${index}++) {", "\t$0", "}"],
+        "description": "For Loop"
+    },
+    "Sublist Loop": {
+        "scope": "javascript,typescript",
+        "prefix": "sublist",
+        "body": [
+            "let ${lineCount} = ${record}.getLineCount({ 'sublistId': '${subline}' });",
+            "for (let i = 0; i < lineCount; i++) {",
+            "\t${record}.setSublistValue({",
+            "\t\tsublistId: '${subline}',",
+            "\t\tfieldId: '${fieldId}',",
+            "\t\tline: i,",
+            "\t\tvalue: ${value}",
+            "\t});",
+            "};",
+            "let ${newRecordId} = ${record}.save({",
+            "\tenableSourcing: true,",
+            "\tignoreMandatoryFields: false",
+            "});",
+            "$0"
+        ],
+        "description": "Loops though a sublist and changes a value"
+    },
+    "Sublist Loop Dynamic": {
+        "scope": "javascript,typescript",
+        "prefix": "sublist dynamic",
+        "body": [
+            "let ${lineCount} = ${record}.getLineCount({ 'sublistId': '${subline}' });",
+            "for (let ${i} = 0; ${i} < ${lineCount}; ${i}++) {",
+            "\t${record}.selectLine({",
+            "\t\tsublistId: '${subline}',",
+            "\t\tline: ${i}",
+            "\t});",
+            "\t${record}.setCurrentSublistValue({",
+            "\t\tsublistId: '${subline}',",
+            "\t\tfieldId: '${fieldId}',",
+            "\t\tline: ${i},",
+            "\t\tvalue: ${value},",
+            "\t\tignoreFieldChange: false",
+            "\t});",
+            "\t${record}.commitLine({",
+            "\t\tsublistId: '${subline}',",
+            "\t\tignoreRecalc: false",
+            "\t});",
+            "};",
+            "let ${newRecordId} = ${record}.save({",
+            "\tenableSourcing: true,",
+            "\tignoreMandatoryFields: false",
+            "});",
+            "$0"
+        ],
+        "description": "Loops though a Dynamic sublist and changes a value"
+    },
+    "ParametersDefine": {
+        "scope": "javascript,typescript",
+        "prefix": "parameters",
+        "body": [
+            "let ${script} = runtime.getCurrentScript();",
+            "let ${param} = ${script}.getParameter('${custscript_}');",
+            "$0"
+        ],
+        "description": "Adds code to pull parameters from the script context"
+    },
+    "Parameter": {
+        "scope": "javascript,typescript",
+        "prefix": "parameter",
+        "body": ["let ${param} = ${script}.getParameter('${custscript_}');", "$0"],
+        "description": "Adds code to add one parameters from the script context"
+    },
+    // Assume that 'N/search' module is included as 'search'
+    // this search will return a lot of results (not having any filters)
+    "Search > 4000": {
+        "scope": "javascript,typescript",
+        "prefix": "search>4000",
+        "body": [
+            "let ${1:s} = search.create({",
+            "\ttype: search.Type.TRANSACTION,",
+            "\tcolumns : [],",
+            "\tfilters : [] ",
+            "});",
+            "let pagedData = ${1:s}.runPaged({",
+            "\tpageSize: ${2:1000}",
+            "});",
+            "// iterate the pages",
+            "for( let i=0; i < pagedData.pageRanges.length; i++ ) {",
+            "\t// fetch the current page data",
+            "\tlet currentPage = pagedData.fetch(i);",
+            "\t// and forEach() thru all results",
+            "\tcurrentPage.data.forEach( function(result) {",
+            "\t\t// you have the result row. use it like this....",
+            "\t\tlet ${3:Id} = result.id;",
+            "\t\tlet ${4:letName} = result.getValue('${5:fieldId}'); ",
+            "\t});",
+            "}",
+            "$0"
+        ],
+        "description": "Adds code to create a search that could have > 4000 results."
+    },
+    "debug.log one variable": {
+        "scope": "javascript,typescript",
+        "prefix": "log_1_variable",
+        "body": ["log.debug({title: '${1:variable}', details: ${1:variable}});", "$0"],
+        "description": "log.debugs 1 variable."
+    },
+    "debug.log one variable with stringify": {
+        "scope": "javascript,typescript",
+        "prefix": "log_1_variable_with_stringify",
+        "body": ["log.debug({title: '${1:variable}', details: JSON.stringify(${1:variable}) });", "$0"],
+        "description": "log.debugs 1 variable with JSON.stringify()."
+    },
+    "console.log one variable": {
+        "scope": "javascript,typescript",
+        "prefix": "console.log_1_variable",
+        "body": ["console.log('${1:variable}: ' + ${1:variable});", "$0"],
+        "description": "console.log 1 variable."
+    },
+    "console.log one variable with stringify": {
+        "scope": "javascript,typescript",
+        "prefix": "console.log_1_variable_with_stringify",
+        "body": ["console.log('${1:variable}: ' + JSON.stringify(${1:variable}));", "$0"],
+        "description": "console.log 1 variable with stringify."
+    },
+    "Comment": {
+        "scope": "javascript,typescript",
+        "prefix": "comment",
+        "body": ["$LINE_COMMENT * BV * $CURRENT_MONTH-$CURRENT_DATE-$CURRENT_YEAR * $0 "],
+        "description": "creates a structured comment"
+    },
+    "getValue": {
+        "scope": "javascript,typescript",
+        "prefix": "getValue",
+        "body": ["${record}.getValue({fieldId: '${fieldId}'});", "$0"],
+        "description": "record.getValue template"
+    },
+    "WPE Log": {
+        "scope": "javascript,typescript",
+        "prefix": "wpelog",
+        "body": [
+            "${1:utils}.wpeLog({",
+            "\tmessage: `$2`,",
+            "\tcontext: '$3',",
+            "\tlogLevel: '${4:debug}',",
+            "\tactionType: '$5',",
+            "\trecordType: '$6',",
+            "\trecordId: '$7',",
+            "\ttransactionId: '$8',",
+            "\tentityId: '$9',",
+            "\titemId: '$10',",
+            "\tsubscriptionId: '$11',",
+            "\tlink: '$12',",
+            "\trequest: '$13',",
+            "\tresponse: '$14',",
+            "\tcallstack: '$15',",
+            "\tlogExecutionMessage: ${16:false}",
+            "});",
+            "$0"
+        ],
+        "description": "creates a structured comment"
+    },
+    "WPE Error Log": {
+        "scope": "javascript,typescript",
+        "prefix": "wpeErrorlog",
+        "body": [
+            "${1:utils}.wpeErrorLog({",
+            "\tmessage: `$2`,",
+            "\tlocation: '$3',",
+            "\tlevel: '${4:debug}',",
+            "\texecutionContext: '$5',",
+            "\tcallstack: '$6',",
+            "\tdata: '$7',",
+            "\trequest: '$8',",
+            "\tresponse: '$9',",
+            "\tcontactId: '$10',",
+            "\tsendNotification: '$11',",
+            "\tscriptId: '$12',",
+            "\tresolvedById: '$13',",
+            "\tresolution: '$14',",
+            "\temailList: '$15',",
+            "\tslackChannelsList: '$16',",
+            "\tlogExecutionMessage: ${17:false}",
+            "});",
+            "$0"
+        ],
+        "description": "creates a WPE Error Log record"
+    },
+    "WPE Log 1 variable": {
+        "scope": "javascript,typescript",
+        "prefix": "wpelog1Var",
+        "body": ["${1:utils}.wpeLog({message: `$2: ${$2}`, context: '$3'});", "$0"],
+        "description": "Creates a abreviated WPE Log Record"
+    },
+    "WPE Log 1 variable With Stringify": {
+        "scope": "javascript,typescript",
+        "prefix": "wpelog1VarWithStringify",
+        "body": ["${1:utils}.wpeLog({message: `$2: JSON.stringify(${$2}, null, 2)`, context: '$3'});", "$0"],
+        "description": "Creates a abreviated WPE Log Record"
+    },
+    "WPE Error Log 1 variable": {
+        "scope": "javascript,typescript",
+        "prefix": "wpeErrorlog1Var",
+        "body": ["${1:utils}.wpeErrorLog({message: `$2: ${$2}`, location: ${3:wpeErrorLogContext}});", "$0"],
+        "description": "Creates a abreviated WPE Error Log Record"
+    },
+    "WPE Error Log 1 variable With Stringify": {
+        "scope": "javascript,typescript",
+        "prefix": "wpeErrorlog1VarWithStringify",
+        "body": [
+            "${1:utils}.wpeErrorLog({message: `$2: ${JSON.stringify($2, null, 2)}`, request: ` ${JSON.stringify($2, null, 2)}`, location: ${3:wpeErrorLogContext}});",
+            "$0"
+        ],
+        "description": "Creates a abreviated WPE Error Log Record"
+    },
+    "WPE Error Log Enter": {
+        "scope": "javascript,typescript",
+        "prefix": "wpeErrorlogEnter",
+        "body": [
+            "let wpeErrorLogContext = '${TM_FILENAME/(.js)//}-$1';",
+            "${2:utils}.wpeErrorLog({",
+            "\tmessage: 'Entering ' + wpeErrorLogContext,",
+            "\tdata: JSON.stringify(context, null, 2),",
+            "\tlocation: wpeErrorLogContext,",
+            "\tlevel: 'trace',",
+            "\texecutionContext: context.type",
+            "});",
+            "$0"
+        ],
+        "description": "Creates a abreviated WPE Error Log Record on entry of a function"
+    },
+    "WPE Error Log Leaving": {
+        "scope": "javascript,typescript",
+        "prefix": "wpeErrorlogLeaving",
+        "body": [
+            "${1:utils}.wpeErrorLog({",
+            "\tmessage: 'Leaving ' + wpeErrorLogContext,",
+            "\tlocation: wpeErrorLogContext,",
+            "\tlevel: 'trace'",
+            "});",
+            "$0"
+        ],
+        "description": "Creates a abreviated WPE Error Log Record on leaving of a function"
+    },
+    "WPE Error Log Catch": {
+        "scope": "javascript,typescript",
+        "prefix": "wpeErrorlogCatch",
+        "body": [
+            "${1:utils}.wpeErrorLog({",
+            "\tmessage: ` ${error.message}`,",
+            "\tcallStack: `${error.stack || ''}`,",
+            "\tlocation: wpeErrorLogContext + '-Catch',",
+            "\tlevel: 'exception',",
+            "\texecutionContext: context.type",
+            "});",
+            "$0"
+        ],
+        "description": "Creates a abreviated WPE Error Log Record in an exception handler"
+    },
+    "After Submit JDOC": {
+        "scope": "javascript,typescript",
+        "prefix": "UserEvent_AfterSubmit_JDOC",
+        "body": [
+            "/**",
+            "* After Submit",
+            "* @param {object} context",
+            "* @param {object} .newRecord",
+            "* @param {object} .oldRecord",
+            "* @param {context.UserEventType} .type (APPROVE, CANCEL, CHANGEPASSWORD, COPY, CREATE,",
+            "*                                       DELETE, DROPSHIP, EDIT, EDITFORECAST, EMAIL, MARKCOMPLETE,",
+            "*                                       ORDERITEMS, PACK, PAYBILLS, PRINT, QUICKVIEW, REASSIGN, REJECT,",
+            "*                                       SHIP, SPECIALORDER, TRANSFORM, VIEW, XEDIT)",
+            "*/"
+        ],
+        "description": "creates a JDOC comment for UserEvent After Submit"
+    },
+    "UserEvent Before Submit JDOC": {
+        "scope": "javascript,typescript",
+        "prefix": "UserEvent_BeforeSubmit_JDOC",
+        "body": [
+            "/**",
+            "* Before Submit",
+            "* @param {object} context",
+            "* @param {object} .newRecord",
+            "* @param {object} .oldRecord",
+            "* @param {context.UserEventType} .type (APPROVE, CANCEL, CHANGEPASSWORD, COPY, CREATE,",
+            "*                                       DELETE, DROPSHIP, EDIT, EDITFORECAST, EMAIL, MARKCOMPLETE,",
+            "*                                       ORDERITEMS, PACK, PAYBILLS, PRINT, QUICKVIEW, REASSIGN, REJECT,",
+            "*                                       SHIP, SPECIALORDER, TRANSFORM, VIEW, XEDIT)",
+            "*/"
+        ],
+        "description": "creates a JDOC comment for UserEvent Before Submit"
+    },
+    "Before Load JDOC": {
+        "scope": "javascript,typescript",
+        "prefix": "UserEvent_BeforeLoad_JDOC",
+        "body": [
+            "/**",
+            "* Before Load",
+            "* @param {object} context",
+            "* @param {serverWidget.Form}\t\t.form",
+            "* @param {record.Record}\t\t\t.newRecord",
+            "* @param {http.ServerRequest}\t\t.request (optional)",
+            "* @param {context.UserEventType}\t.type (APPROVE, CANCEL, CHANGEPASSWORD, COPY, CREATE,",
+            "*                                       DELETE, DROPSHIP, EDIT, EDITFORECAST, EMAIL, MARKCOMPLETE,",
+            "*                                       ORDERITEMS, PACK, PAYBILLS, PRINT, QUICKVIEW, REASSIGN, REJECT,",
+            "*                                       SHIP, SPECIALORDER, TRANSFORM, VIEW, XEDIT)",
+            "*/"
+        ],
+        "description": "creates a JDOC comment for UserEvent Before Load"
+    },
+    "Execute JDOC": {
+        "scope": "javascript,typescript",
+        "prefix": "ScheduledScript_Execute_JDOC",
+        "body": [
+            "/**",
+            "* Execute",
+            "* @param {object} context",
+            "*        {context.InvocationType}\t.type (SCHEDULED, ON_DEMAND, USER_INTERFACE, ABORTED, SKIPPED)",
+            "*/"
+        ],
+        "description": "creates a JDOC comment for Scheduled Script Execute"
+    },
+    "Page Init JDOC": {
+        "scope": "javascript,typescript",
+        "prefix": "ClientScript_PageInit_JDOC",
+        "body": [
+            "/**",
+            "* Page Init",
+
+            "*Defines the function that is executed after the page completes loading or when the form is reset.",
+            "* The following sample tasks can be performed:",
+            "* Populate field defaults.",
+            "* Disable or enable fields.",
+            "* Change field availability or values depending on the data available for the record.",
+            "* Add flags to set initial values of fields.",
+            "* Provide alerts where the data being loaded is inconsistent or corrupted.",
+            "* Retrieve user login information and change field availability or values accordingly.",
+            "* Validate that fields required for your custom code (but not necessarily required for the form) exist.",
+            "* @param {object} context",
+            "*        {record.Record}\t.currentRecord",
+            "*        {string}\t\t\t.mode (copy, create, edit)",
+            "*/"
+        ],
+        "description": "creates a JDOC comment for Client Event Page Init"
+    },
+    "Field Changed JDOC": {
+        "scope": "javascript,typescript",
+        "prefix": "ClientScript_FieldChanged_JDOC",
+        "body": [
+            "/**",
+            "* Field Changed",
+            "* Defines the function that is executed when a field is changed by a user or client call.",
+            "* This event may also execute directly through beforeLoad user event scripts.",
+            "* The following sample tasks can be performed:",
+            "* Provide the user with additional information based on user input.",
+            "* Disable or enable fields based on user input.",
+            "* For an example, see SuiteScript Client Script Sample.",
+            "* Note This event does not execute when the field value is changed or entered in the page URL. Use the pageInit function to handle URLs that may contain updated field values. See pageInit(scriptContext).",
+            "* @param {object} scriptContext",
+            "*        {record.Record}\t.currentRecord",
+            "*        {string}\t\t\t.scriptContext.sublistId\tThe sublist ID name.",
+            "*        {string}\t\t\t.scriptContext.fieldId\t\tThe field ID name.",
+            "*        {string}\t\t\t.scriptContext.line\t\t\tThe line number (zero-based index) if the field is in a sublist or a matrix.",
+            "*        {string}\t\t\t.scriptContext.column\t\tThe column number (zero-based index) if the field is in a matrix.  If the field is not in a matrix, the default value is undefined.",
+            "*/"
+        ],
+        "description": "creates a JDOC comment for Client Event Field Changed"
+    },
+    "Post Sourcing JDOC": {
+        "scope": "javascript,typescript",
+        "prefix": "ClientScript_PostSourcing_JDOC",
+        "body": [
+            "/**",
+            "* Post Sourcing",
+            "* Defines the function that is executed when a field that sources information from another field is accessed (that is, clicked). In some cases, this entry point is triggered as soon as a field is clicked upon. In other cases, it is triggered only after the contents of the field are changed.",
+            "* This event behaves like a fieldChanged event after all dependent field values have been set. The event waits for any cascaded field changes to complete before calling the user defined function.",
+            "* Executes on transaction forms only.",
+            "* @param {object} scriptContext",
+            "*        {record.Record}\t.currentRecord",
+            "*        {string}\t\t\t.scriptContext.sublistId\tThe sublist ID name.",
+            "*        {string}\t\t\t.scriptContext.fieldId\t\tThe field ID name.",
+            "*/"
+        ],
+        "description": "creates a JDOC comment for Client Event Post Sourcing"
+    },
+    "Validate Line JDOC": {
+        "scope": "javascript,typescript",
+        "prefix": "ClientScript_ValidateLine_JDOC",
+        "body": [
+            "/**",
+            "* Validate Line",
+            "* Defines the validation function that is executed before a line is added to an inline editor sublist or editor sublist.",
+            "* This event can behave like a saveRecord event for line items in an inline editor sublist or editor sublist",
+            "* @param {object} scriptContext",
+            "* @param {record.Record}\t.currentRecord",
+            "* @param {string}\t\t\t.scriptContext.sublistId\tThe sublist ID name.",
+            "* @returns {bool}\ttrue if the sublist line is valid and the addition is successful. false otherwise.",
+            "*/"
+        ],
+        "description": "creates a JDOC comment for Client Event Validate Line"
+    },
+        "Sublist Changed JDOC": {
+        "scope": "javascript,typescript",
+        "prefix": "ClientScript_SublistChanged_JDOC",
+        "body": [
+            "/**",
+            "* Sublist Changed",
+            "* Defines the function that is executed after a sublist is inserted, removed, or edited.",
+            "* @param {object} scriptContext",
+            "* @param {record.Record}\t.currentRecord",
+            "* @param {string}\t\t\t.scriptContext.sublistId\tThe sublist ID name.",
+            "*/"
+        ],
+        "description": "creates a JDOC comment for Client Event Sublist Changed"
+    },
+        "Validate Delete JDOC": {
+        "scope": "javascript,typescript",
+        "prefix": "ClientScript_ValidateDelete_JDOC",
+        "body": [
+            "/**",
+            "* Validate Delete",
+            "* Defines the validation function that is executed when an existing line in an edit sublist is deleted.",
+            "* @param {object} scriptContext",
+            "* @param {record.Record}\t.currentRecord",
+            "* @param {string}\t\t\t.scriptContext.sublistId\tThe sublist ID name.",
+            "* @param {string}\t\t\t.scriptContext.lineCount\tThe number of lines to be deleted.",
+            "* @returns {bool}\ttrue if the sublist lines are deleted. false otherwise.",
+            "* This property is defined only when validateDelete is triggered by the Clear All Lines button in the UI.",
+            "*/"
+        ],
+        "description": "creates a JDOC comment for Client Event Validate Delete"
+    },
+        "Line Init JDOC": {
+        "scope": "javascript,typescript",
+        "prefix": "ClientScript_LineInit_JDOC",
+        "body": [
+            "/**",
+            "* Line Init",
+            "* Defines the function that is executed when an existing line is selected.",
+            "* This event can behave like a pageInit event for line items in an inline editor sublist or editor sublist.",
+            "* @param {object} scriptContext",
+            "* @param {record.Record}\t.currentRecord",
+            "* @param {string}\t\t\t.scriptContext.sublistId\tThe sublist ID name.",
+            "*/"
+        ],
+        "description": "creates a JDOC comment for Client Event Line Init"
+    },
+        "Validate Insert JDOC": {
+        "scope": "javascript,typescript",
+        "prefix": "ClientScript_ValidateInsert_JDOC",
+        "body": [
+            "/**",
+            "* Validate Insert",
+            "* Defines the validation function that is executed when a sublist line is inserted into an edit sublist.",
+            "* @param {object} scriptContext",
+            "* @param {record.Record}\t.currentRecord",
+            "* @param {string}\t\t\t.scriptContext.sublistId\tThe sublist ID name.",
+            "* @returns {bool}\ttrue if the sublist line is valid and the insertion is successful. false otherwise.",
+            "* This property is defined only when validateDelete is triggered by the Clear All Lines button in the UI.",
+            "*/"
+        ],
+        "description": "creates a JDOC comment for Client Event Validate Insert"
+    },
+    "Suitelet JDOC": {
+        "scope": "javascript,typescript",
+        "prefix": "Suitelet_onRequest_JDOC",
+        "body": [
+            "/**",
+            "* onRequest",
+            "* @param {object} params",
+            "* @param {http.ServerRequest}\t.request",
+            "* @param {http.ServerResponse}\t.response",
+            "* @returns void",
+            "*/"
+        ],
+        "description": "creates a JDOC comment for Suitelet onRequest"
+    },
+    "Restlet GET JDOC": {
+        "scope": "javascript,typescript",
+        "prefix": "Restlet_GET_JDOC",
+        "body": [
+            "/**",
+            "* doGet",
+            "* @param {string | Object}\t\trequestBody - request body",
+            "* @returns {string | Object}\t//Returns a string when request Content-Type is 'text/plain'.  Returns an Object when request Content-Type is application/json or application/xml.",
+            "* @returns {httpsResponse}\t\t",
+            "*/"
+        ],
+        "description": "creates a JDOC comment for Restlet GET"
+    },
+    "Restlet Post JDOC": {
+        "scope": "javascript,typescript",
+        "prefix": "Restlet_POST_JDOC",
+        "body": [
+            "/**",
+            "* doPost",
+            "* @param {string | Object}\t\trequestBody - request body",
+            "* @returns {string | Object}\t//Returns a string when request Content-Type is 'text/plain'.  Returns an Object when request Content-Type is application/json or application/xml.",
+            "* @returns {httpsResponse}\t\t",
+            "*/"
+        ],
+        "description": "creates a JDOC comment for Restlet POST"
+    },
+    "pageInit Client JDOC": {
+        "scope": "javascript,typescript",
+        "prefix": "pageInit_JDOC",
+        "body": [
+            "/**",
+            "*  Defines the function that is executed after the page completes loading or when the form is reset.",
+            "*  The following sample tasks can be performed:",
+            "*  Populate field defaults.",
+            "*  Disable or enable fields.",
+            "*  Change field availability or values depending on the data available for the record.",
+            "*  Add flags to set initial values of fields.",
+            "*  Provide alerts where the data being loaded is inconsistent or corrupted.",
+            "*  Retrieve user login information and change field availability or values accordingly.",
+            "*  Validate that fields required for your custom code (but not necessarily required for the form) exist.",
+            "*",
+            "* @param   {Object}\t\tScriptContext.current - The current form record.",
+            "* @param   {string}\t\t//The mode in which the record is being accessed. The mode can be set to one of the following values: (copy, create, edit)",
+            "* @returns {void}",
+            "*/"
+        ],
+        "description": "creates a JDOC comment for Client pageInit"
+    },
+    "saveRecord Client JDOC": {
+        "scope": "javascript,typescript",
+        "prefix": "saveRecord_JDOC",
+        "body": [
+            "/**",
+            "*  Defines the function that is executed when a record is saved (after the submit button is pressed but before the form is submitted).",
+            "*  The following sample tasks can be performed:",
+            "*  Provide alerts before committing the data.",
+            "*  Enable fields that were disabled with other functions.",
+            "*  Redirect the user to a specified URL.",
+            "*",
+            "* @param   {Object}\tScriptContext.current - The current form record.",
+            "* @param   {string}\tThe mode in which the record is being accessed. The mode can be set to one of the following values: (copy, create, edit)",
+            "* @returns {bool}\t\ttrue if the record is valid and is saved.  Otherwise the record is not saved.",
+            "*/"
+        ],
+        "description": "creates a JDOC comment for Client saveRecord"
+    },
+    "getInputData Map/Reduce JDOC": {
+        "scope": "javascript,typescript",
+        "prefix": "getInputData_MapReduce_JDOC",
+        "body": [
+            "/**",
+            "*  Marks the beginning of the map/reduce script execution. Invokes the input stage.",
+            "*  This function is invoked one time in the execution of the script.",
+            "*",
+            "* @param   {bool}   isRestarted    Indicates whether the current invocation of the getInputData(inputContext) function represents a restart..",
+            "* @param   {object} ObjectRef      ",
+            "* @param   {string|number}   .id   The internal ID or script ID of the object. For example, this value could be a saved search ID.",
+            "* @param   {string}          .type The object’s type.",
+            "* @returns {Array|Object}          Array, Object, search.Search, search.Search Object Reference",
+            "*                                  file.File object, file.File object reference",
+            "*                                  query.Query object, query.Query object reference",
+            "*/"
+        ],
+        "description": "creates a JDOC comment for Map/Reduce getInputData"
+    },
+    "map Map/Reduce JDOC": {
+        "scope": "javascript,typescript",
+        "prefix": "map_MapReduce_JDOC",
+        "body": [
+            "/**",
+            "*  Marks the beginning of the map/reduce script execution. Invokes the input stage.",
+            "*  This function is invoked one time in the execution of the script.",
+            "*",
+            "* @param   {bool}  mapContext.isRestarted",
+            "* @param   {bool}  mapContext.executionNo Indicates whether the current invocation of the map(mapContext)",
+            "*                                         function is the first or a subsequent invocation for the ",
+            "*                                         current key/value pair.",
+            "* @param   {bool}  mapContext.errors      Holds serialized errors that were thrown during previous",
+            "*                                         attempts to execute the map function on the current ",
+            "*                                         key/value pair.",
+            "*                                         This iterator may also hold the SSS_APP_SERVER_RESTART error code,",
+            "*                                         which is recorded if the function is interrupted by an application",
+            "*                                         server restart.",
+            "*                                         For an overview of events that can cause the map function to be ",
+            "*                                         invoked multiple times for a key/value pair, see System Response",
+            "*                                         After a Map/Reduce Interruption.",
+            "* @param   {bool}  mapContext.key         The key to be processed during the map stage.",
+            "*                                         If the input type is an array, the key is the index.",
+            "*                                         If the input type is an object, the key is the key in the object.",
+            "*                                         If the input type is a result set, the key is the internal ID of",
+            "*                                         the result. If the search result has no internal ID, the key is",
+            "*                                         the index of the search result.",
+
+            "* @param   {bool}  mapContext.value      The value to be processed during the map stage.",
+            "*                                        If the input type is an array, the mapContext.value is the value",
+            "*                                        in the element.",
+            "*                                        If the input type is an object, the mapContext.value is the value",
+            "*                                        in the object.",
+            "*                                        If the input type is a result set, the mapContext.value is a",
+            "*                                        search.Result object converted to a JSON string by using",
+            "*                                        JSON.stringify().",
+            "* @param   {object}  mapContext.write    Writes the key/value pairs to be passed to the shuffle and then",
+            "*                                        the reduce stage.",
+            "*                                        If your script includes both a map and a reduce function, you must",
+            "*                                       use this method so that the reduce function is invoked.",
+            "*          {string|object}           .key   The key to write",
+            "*          {string|object}           .value The value to write",
+            "* @returns {void}          ",
+            "*/"
+        ],
+        "description": "creates a JDOC comment for Map/Reduce map"
+    },
+    "reduce Map/Reduce JDOC": {
+        "scope": "javascript,typescript",
+        "prefix": "reduce_MapReduce_JDOC",
+        "body": [
+            "/**",
+            "* Executes when the reduce entry point is triggered.",
+            "* The logic in your reduce function is applied to each key, and its corresponding list of value. Only one key, with its corresponding values, is processed per function invocation. The function is invoked again for the next key and corresponding set of values.",
+            "* Data is provided to the reduce stage by one of the following:",
+            "* The getInputData stage — if your script has no map function.",
+            "* The shuffle stage — if your script uses a map function. The shuffle stage follows the map stage. Its purpose is to sort data from the map stage by key.",
+            "*",
+            "* @param   {bool}            .isRestarted    Indicates whether the current invocation of the getInputData(inputContext) function represents a restart..",
+            "* @param   {number}          .executionNo    Indicates whether the current invocation of the reduce(reduceContext) function is the first, second, third, or fourth for the current key and its values.",
+            "*                                            For an overview of events that can cause a restart, see System Response After a Map/Reduce Interruption.",
+            "*                                            When the reduce function is restarted for a key, data previously written by the incomplete function is deleted. However, some of the function’s logic might have been executed before the function invocation was interrupted. For that reason, you may want to use the reduceContext.executionNo property to provide logic designed to avoid duplicate processing.",
+            "* @param   {string|number}   .errors         Holds serialized errors that were thrown during previous attempts to execute the reduce function on the current key and its values.",
+            "*                                            This iterator may also hold the SSS_APP_SERVER_RESTART error code, which is recorded if the function is interrupted by an application server restart.",
+            "*                                            For an overview of events that can cause the map function to be invoked multiple times for a key/value pair, see System Response After a Map/Reduce Interruption.",
+            "* @param   {string}          .key            When the map/reduce process includes a map stage, the reduce keys are the keys written by mapContext.write(options).",
+            "*                                            When the map stage is skipped, the reduce keys are provided by the getInputData stage:",
+            "*                                            If the input type is an array, the key is the index of the element.",
+            "*                                            If the input type is an object, the key is the key in the object.",
+            "*                                            If the input type is a result set, the key is the internal ID of the result.",
+            "* @param  {string[]}         .value          This array holds all values associated with a unique key that was passed to the reduce stage for processing. These values are listed in lexicographical order.",
+            "*                                            When the map/reduce process includes a map stage, the key/value pairs passed to the reduce stage are derived from the values written by mapContext.write(options).",
+            "*                                            When the map stage is skipped, the values are determined by the getInputData stage:",
+            "*                                            If the input type is an array, it is the value in the element.",
+            "*                                            If the input type is an object, it is the value in the object.",
+            "*                                            If the input type is a result set, the value is a search.Result object converted to a JSON string with JSON.stringify().",
+            "* @returns {void}",
+            "*/"
+        ],
+        "description": "creates a JDOC comment for Map/Reduce reduce"
+    },
+    "summarize Map/Reduce JDOC": {
+        "scope": "javascript,typescript",
+        "prefix": "summarize_MapReduce_JDOC",
+        "body": [
+            "/**",
+            "* Holds statistics regarding execution of a map/reduce script.",
+            "* This object includes the following properties:",
+            "* summaryContext.isRestarted",
+            "* summaryContext.concurrency",
+            "* summaryContext.dateCreated",
+            "* summaryContext.seconds",
+            "* summaryContext.usage",
+            "* summaryContext.yields",
+            "* summaryContext.inputSummary",
+            "*     inputSummary.dateCreated",
+            "*     inputSummary.seconds",
+            "*     inputSummary.usage",
+            "*     inputSummary.error",
+            "* summaryContext.mapSummary",
+            "*     mapSummary.concurrency",
+            "*     mapSummary.dateCreated",
+            "*     mapSummary.keys",
+            "*     mapSummary.seconds",
+            "*     mapSummary.usage",
+            "*     mapSummary.yields",
+            "*     mapSummary.errors",
+            "* summaryContext.reduceSummary",
+            "*     reduceSummary.concurrency",
+            "*     reduceSummary.dateCreated",
+            "*     reduceSummary.keys",
+            "*     reduceSummary.seconds",
+            "*     reduceSummary.usage",
+            "*     reduceSummary.yields",
+            "*     reduceSummary.errors",
+            "* summaryContext.output",
+            "*/"],
+        "description": "creates a JDOC comment for Map/Reduce summarize"
+    }
+}

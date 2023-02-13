@@ -1,0 +1,9 @@
+{
+    "netSuiteUpload.restlet": "https://tstdrv2718589.restlets.api.netsuite.com/app/site/hosting/restlet.nl?script=91&deploy=1",
+    "netSuiteUpload.tempFolder": "/tmp",
+    "netSuiteUpload.realm": "TSTDRV2718589",
+    "netSuiteUpload.consumerSecret": "e034b99fb92872de5e150adc6b5f73fa282381340d476befc12d8e7444a8a241",
+    "netSuiteUpload.consumerToken": "de0b5e994ec6d511e3bd1b01b22d90deef7869d0a98fba2d794447b40a92a822",
+    "netSuiteUpload.netSuiteKey": "7732a3da50f35e4463b7c459ed73194e0377d7c4a3b8719448e1835252ca85b0",
+    "netSuiteUpload.netSuiteSecret": "b8a757efb503a4666c8c327e2f8e5137883b5612d618a024f1b90ca190f3f3ed"
+}
