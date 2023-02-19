@@ -9,7 +9,7 @@ define([], function() {
         let employee = context.currentRecord;
         
         let empCode = employee.getValue('custentity_sdr_employee_code') // validate employee code value
-        if (empCode === 'x') {
+        if (empCode === 'X') {
             alert('Invalid Employee Code value. Please try again'); 
             return false; //make sure to return a boolean value. Dissallow user to save
         }
@@ -19,7 +19,7 @@ define([], function() {
     function validateField(context) { // When user moves away from field
         let employee = context.currentRecord;
 
-        if (context.fieldID === 'custentity_sdr_employee_code') {
+        if (context.fieldId === 'custentity_sdr_employee_code') {
             let empCode = employee.getValue('custentity_sdr_employee_code');
 
             if (empCode === 'x') {
