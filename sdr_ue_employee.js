@@ -4,32 +4,32 @@
  *@NScriptType UserEventScript
  */
 
-//  Walkthrough: Scripting a Custom Entity Field
-//
-//  Goals: 
-//  - Create a custom field called Employee Code
-//  - Extract Employee Code, Supervisor Name, and Supervisor ID from the record
-//
-//  Skills Covered:
-//  - Create a custom field - SuiteBuilder
-//  - Get and set values from a record object 
-
-define([], function() {
+define(['N/record'], function(record) {
 
     function afterSubmit(context) {
- 
-        // First get a reference to the record you're saving
-        var employee = context.newRecord;
-        var empCode = employee.getValue('custentity_sdr_employee_code');
-        var supervisorName = employee.getText('supervisor');
-        var supervisorID = employee.getValue('supervisor');
+
+        let employee = context.newRecord;
+        let empCode = employee.getValue('custentity_sdr_employee_code');
+        let supervisorID = employee.getValue('supervisor');
  
         log.debug('Employee Code', empCode);
         log.debug('Supervisor ID', supervisorID);
-        log.debug('Supervisor Name', supervisorName);
-    }
+
+        if (context.type === context.UserEventType.CREATE){ //filter for when user is creating the record
+            let phoneCall = record.create({
+                type: record.Type.PHONE_CALL,
+                defaultValues: {
+                    customform: -150
+                }
+            });
+
+            phoneCall.setValue('title', 'Call HR for benefits');
+            phoneCall.setValue('assigned', employee.id);
+            phoneCall.save();
+        }
+    };
  
     return {
         afterSubmit: afterSubmit
-    }
+    };
  });
