@@ -3,6 +3,7 @@
  *@NApiVersion 2.1
  *@NScriptType ClientScript
  */
+
 define([], function() {
 
     function saveRecord(context) {
@@ -43,13 +44,38 @@ define([], function() {
 
             }
         } 
-
     }
 
+    function pageInit(context) {
+        let employee = context.currentRecord;
+        // Get count of performance reviews
+        let perfRevCount = employee.getLineCount({
+            sublistId : 'recmachcustrecord_sdr_perf_subordinate'
+        });
+
+        let notes = 'This employee has ' + perfRevCount + ' performance reviews.\n';
+        // Get count of F-Rated reviews
+        let fRatingCount = 0;
+        for (let i=0; i <perfRevCount; i++) {
+            let ratingCode = employee.getSublistValue({
+                sublistId : 'recmachcustrecord_sdr_perf_subordinate',
+                fieldId   : 'custrecord_sdr_perf_rating_code',
+                line      : i
+            });
+
+            if (ratingCode === 'F') {
+                fRatingCount += 1;
+            } 
+        }
+
+        notes += 'This employee has ' + fRatingCount + ' F-rated reviews.';
+        alert(notes);
+    }
     return {
         saveRecord: saveRecord,
         validateField: validateField,
-        fieldChanged: fieldChanged
+        fieldChanged: fieldChanged,
+        pageInit: pageInit
     }
 });
 

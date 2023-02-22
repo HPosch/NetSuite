@@ -5,7 +5,16 @@
  */
 
 define(['N/record'], function(record) {
-
+/**
+* After Submit
+* @param {object} context
+* @param {object} .newRecord
+* @param {object} .oldRecord
+* @param {context.UserEventType} .type (APPROVE, CANCEL, CHANGEPASSWORD, COPY, CREATE,
+*                                       DELETE, DROPSHIP, EDIT, EDITFORECAST, EMAIL, MARKCOMPLETE,
+*                                       ORDERITEMS, PACK, PAYBILLS, PRINT, QUICKVIEW, REASSIGN, REJECT,
+*                                       SHIP, SPECIALORDER, TRANSFORM, VIEW, XEDIT)
+*/
     function afterSubmit(context) {
 
         let employee = context.newRecord;
@@ -19,12 +28,13 @@ define(['N/record'], function(record) {
             let phoneCall = record.create({
                 type: record.Type.PHONE_CALL,
                 defaultValues: {
-                    customform: -150
+                    customform: 26
                 }
             });
 
             phoneCall.setValue('title', 'Call HR for benefits');
             phoneCall.setValue('assigned', employee.id);
+            phoneCall.setValue('phone', '512-555-6666');
             phoneCall.save();
         }
     };
