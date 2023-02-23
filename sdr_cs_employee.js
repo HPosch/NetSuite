@@ -48,12 +48,14 @@ define([], function() {
 
     function pageInit(context) {
         let employee = context.currentRecord;
+
         // Get count of performance reviews
         let perfRevCount = employee.getLineCount({
             sublistId : 'recmachcustrecord_sdr_perf_subordinate'
         });
 
         let notes = 'This employee has ' + perfRevCount + ' performance reviews.\n';
+
         // Get count of F-Rated reviews
         let fRatingCount = 0;
         for (let i=0; i <perfRevCount; i++) {
@@ -71,11 +73,55 @@ define([], function() {
         notes += 'This employee has ' + fRatingCount + ' F-rated reviews.';
         alert(notes);
     }
+
+    function lineInit(context) {
+        let employee = context.currentRecord;
+
+        // Set default of Review Type for new performance reviews to Salary Change
+        if (context.sublistId === 'recmachcustrecord_sdr_perf_subordinate') {
+
+            let reviewType = employee.getCurrentSublistValue({
+                sublistId : 'recmachcustrecord_sdr_perf_subordinate',
+                fieldId   : 'custrecord_sdr_perf_review_type'
+            });
+
+            if (!reviewType) {
+                employee.setCurrentSublistValue({
+                    sublistId : 'recmachcustrecord_sdr_perf_subordinate',
+                    fieldId   : 'custrecord_sdr_perf_review_type',
+                    value     : 1 // Value of Salary Change
+                });
+            }
+        }
+    }
+
+    function validateLine(context) { 
+        let employee = context.currentRecord;
+
+        // Salary increase cannot be greater than $5,000
+        if (context.sublistId === 'recmachcustrecord_sdr_perf_subordinate') {
+
+            let increaseAmount = employee.getCurrentSublistValue({
+                sublistId : 'recmachcustrecord_sdr_perf_subordinate',
+                fieldId   : 'custrecord_sdr_perf_sal_incr_amt',
+            });
+            
+            if (increaseAmount > 5000) {
+                alert('Salary increase amount cannot be greater than $5,000');
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     return {
         saveRecord: saveRecord,
         validateField: validateField,
         fieldChanged: fieldChanged,
-        pageInit: pageInit
+        pageInit: pageInit,
+        lineInit: lineInit,
+        validateLine: validateLine
     }
 });
 
