@@ -28,14 +28,52 @@ define(['N/record'], function(record) {
             let phoneCall = record.create({
                 type: record.Type.PHONE_CALL,
                 defaultValues: {
-                    customform: 26
+                    customform: -150
                 }
             });
 
             phoneCall.setValue('title', 'Call HR for benefits');
             phoneCall.setValue('assigned', employee.id);
-            phoneCall.setValue('phone', '512-555-6666');
             phoneCall.save();
+
+            // Create an event record. Since this also needs to be triggered when we are creating a new record, we'll put that inside the if statement
+            let event = record.create ({
+                type : record.Type.CALENDAR_EVENT,
+                isDynamic  : true
+            });
+
+            // Set mandatory 
+            event.setValue('title', 'Welcome meeting with supervisor');
+
+            // Select an empty line on my attendees sublist
+            event.selectNewLine({sublistId: 'attendee'}); 
+
+            // Set sublist value for employee
+            event.setCurrentSublistValue ({
+                sublistId : 'attendee',
+                fieldId : 'attendee',
+                value : employee.id
+            });
+
+            // Want user to click the OK or Add button, or virtually do that by using commitLine
+            event.commitLine({sublistId : 'attendee'});
+
+            // To add supervisor...
+
+            // Select an empty line on my attendees sublist
+            event.selectNewLine({sublistId: 'attendee'});
+
+            // Set sublist value 
+            event.setCurrentSublistValue ({
+                sublistId : 'attendee',
+                fieldId : 'attendee',
+                value : employee.getValue('supervisor')
+            });
+            
+            // Want user to click the OK or Add button, or virtually do that by using commitLine
+            event.commitLine({sublistId : 'attendee'});
+
+            event.save();
         }
     };
  
