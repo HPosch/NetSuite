@@ -38,7 +38,7 @@ define(['N/record'], function(record) {
 
             // Create an event record. Since this also needs to be triggered when we are creating a new record, we'll put that inside the if statement
             let event = record.create ({
-                type : record.Type.CALENDAR_EVENT,
+                type : 'calendarevent',
                 isDynamic  : true
             });
 
