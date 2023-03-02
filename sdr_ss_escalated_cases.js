@@ -68,7 +68,6 @@ define(['N/search'], function(search){
                                     'Job Title: ' + jobTitle);
         }
 
-
         // Created from UI
         // let supportcaseSearchObj = search.create({
         //     type: "supportcase",
@@ -117,8 +116,8 @@ define(['N/search'], function(search){
          */
     }
 
-    // return {
-    //     execute: execute
-    // }
+    return {
+        execute: execute
+    }
     
 });
