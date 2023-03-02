@@ -4,7 +4,12 @@
  *@NScriptType ClientScript
  */
 
-define([], function() {
+define(['N/runtime'],
+/**
+ * @param {runtime}, runtime
+ */
+
+function(runtime) {
 
     function saveRecord(context) {
         let employee = context.currentRecord;
@@ -71,7 +76,17 @@ define([], function() {
         }
 
         notes += 'This employee has ' + fRatingCount + ' F-rated reviews.';
-        alert(notes);
+        // alert(notes);
+
+        let empCode = employee.getValue('custentity_sdr_employee_code')
+
+        if (!empCode) {
+            let defaultEmpCode = runtime.getCurrentScript().getParameter({
+                name : 'custscript_sdr_default_emp_code'
+            });
+
+            employee.setValue('custentity_sdr_employee_code', defaultEmpCode);
+        }
     }
 
     function lineInit(context) {
