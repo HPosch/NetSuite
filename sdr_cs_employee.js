@@ -4,18 +4,30 @@
  *@NScriptType ClientScript
  */
 
-define(['N/runtime'],
+define(['N/runtime', 'N/https', 'N/url'],
 /**
- * @param {runtime}, runtime
+ * @param {runtime} runtime
+ * @param {https} https
+ * @param {url} url
  */
 
-function(runtime) {
+function(runtime, https, url) {
 
     function saveRecord(context) {
         let employee = context.currentRecord;
         
-        let empCode = employee.getValue('custentity_sdr_employee_code') // validate employee code value
-        if (empCode === 'X') {
+        let empCode = employee.getValue('custentity_sdr_employee_code'); // validate employee code value
+
+        let restletUrl = url.resolveScript({  // using url module. Grabs URL for your script if you provide script ID and deployment ID
+            deploymentId: 'customdeploy_sdr_rl_validate_emp_code',
+            scriptId: 'customscript_sdr_rl_validate_emp_code',
+        })
+
+        let response = https.get({  // RESTlet
+            url : restletUrl + '&sdr_emp_code=' + empCode
+        })
+
+        if (response.body === 'invalid') {
             alert('Invalid Employee Code value. Please try again'); 
             return false; //make sure to return a boolean value. Dissallow user to save
         }
