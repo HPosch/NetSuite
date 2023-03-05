@@ -8,6 +8,7 @@ define(['N/search'],
  * @param {search} search
  */
 function(search) {
+    
     /**
      * Marks the beginning of the Map/Reduce process and generates input data. 
      * 
@@ -17,6 +18,7 @@ function(search) {
      * 
      * @return {Array|Object|Search|RecordRef} inputSummary
      */
+
     function getInputData() {
         let invSearch = search.create({
             type : search.Type.TRANSACTION,

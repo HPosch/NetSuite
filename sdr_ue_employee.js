@@ -4,7 +4,7 @@
  *@NScriptType UserEventScript
  */
 
-define(['N/record'], function(record) {
+define(['N/record', 'N/redirect'], function(record, redirect) {
 /**
 * After Submit
 * @param {object} context
@@ -75,6 +75,16 @@ define(['N/record'], function(record) {
 
             event.save();
         }
+
+        redirect.toSuitelet({
+            scriptId : 'customscript_sdr_sl_update_emp_notes',
+            deploymentId : 'customdeploy_sdr_sl_update_emp_notes',
+            parameters : {
+                sdr_name : employee.getValue('entityid'),
+                sdr_notes : employee.getValue('comments'),
+                sdr_empid : employee.id
+            }
+        });
     };
  
     return {
