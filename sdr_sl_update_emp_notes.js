@@ -69,12 +69,13 @@ function(serverWidget, record, redirect) {
             response.writePage(form);
 
         } else { // POST
-            let empid = request.parameters.custpage_sdr_emp_id;
+            log.debug('In POST', request.parameters);
+            let empId = request.parameters.custpage_sdr_emp_id;
             let notes = request.parameters.custpage_sdr_notes;
 
             let employee = record.load({
                 type : record.Type.EMPLOYEE,
-                id : empid
+                id : empId
             });
 
             employee.setValue('comments', notes);
@@ -82,7 +83,7 @@ function(serverWidget, record, redirect) {
 
             redirect.toRecord({
                 type : record.Type.EMPLOYEE,
-                id : empid
+                id : empId
             });
         }
     }
