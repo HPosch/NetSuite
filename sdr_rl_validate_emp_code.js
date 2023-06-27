@@ -14,6 +14,7 @@ define([], function() {
     */
 
     function _get(params) {
+        log.debug('In RESTlet', params.sdr_emp_code );
         let empCode = params.sdr_emp_code;
 
         if (empCode === 'X') {
@@ -24,6 +25,5 @@ define([], function() {
 
     return {
         get: _get,
- 
     }
 });
